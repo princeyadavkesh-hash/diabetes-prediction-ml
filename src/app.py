@@ -28,16 +28,15 @@ if st.button("Predict Diabetes"):
     X = np.array([[pregnancies, glucose, blood_pressure,
                    skin_thickness, insulin, bmi, dpf, age]])
 
+    # Get probability of diabetes
     prob = model.predict_proba(X)[0][1]
-    pred = model.predict(X)[0]
 
-    st.write("🔍 Debug info")
-    st.write("Probability:", prob)
-    st.write("Raw Prediction (0=No, 1=Yes):", pred)
+    # Custom threshold (IMPORTANT)
+    THRESHOLD = 0.7
 
-    if pred == 0:
-        st.success("✅ Non-Diabetic (Model Prediction)")
+    if prob >= THRESHOLD:
+        st.error("🚨 Diabetic")
     else:
-        st.error("🚨 Diabetic (Model Prediction)")
+        st.success("✅ Non-Diabetic")
 
     st.caption("Educational purpose only. Not medical advice.")
