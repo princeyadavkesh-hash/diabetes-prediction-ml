@@ -28,17 +28,16 @@ if st.button("Predict Diabetes"):
     X = np.array([[pregnancies, glucose, blood_pressure,
                    skin_thickness, insulin, bmi, dpf, age]])
 
-    # Probability of diabetes (class = 1)
     prob = model.predict_proba(X)[0][1]
+    pred = model.predict(X)[0]
 
-    st.write(f"Diabetes Risk Probability: {prob:.2f}")
+    st.write("🔍 Debug info")
+    st.write("Probability:", prob)
+    st.write("Raw Prediction (0=No, 1=Yes):", pred)
 
-    # FINAL, FIXED INTERPRETATION (NO MORE CONFUSION)
-    if prob < 0.60:
-        st.success("✅ Low Risk of Diabetes")
-    elif prob < 0.75:
-        st.warning("⚠️ Medium Risk of Diabetes")
+    if pred == 0:
+        st.success("✅ Non-Diabetic (Model Prediction)")
     else:
-        st.error("🚨 High Risk of Diabetes")
+        st.error("🚨 Diabetic (Model Prediction)")
 
     st.caption("Educational purpose only. Not medical advice.")
