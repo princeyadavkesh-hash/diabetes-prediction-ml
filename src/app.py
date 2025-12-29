@@ -5,7 +5,7 @@ import numpy as np
 # Page config
 st.set_page_config(page_title="Diabetes Prediction", page_icon="🩺")
 
-# Load model
+# Load trained pipeline (scaler + model)
 model = joblib.load("models/diabetes_pipeline.pkl")
 
 # Title
@@ -28,13 +28,15 @@ if st.button("Predict Diabetes"):
     X = np.array([[pregnancies, glucose, blood_pressure,
                    skin_thickness, insulin, bmi, dpf, age]])
 
+    # Probability of diabetes (class = 1)
     prob = model.predict_proba(X)[0][1]
 
     st.write(f"Diabetes Risk Probability: {prob:.2f}")
 
-    if prob < 0.4:
+    # FINAL, FIXED INTERPRETATION (NO MORE CONFUSION)
+    if prob < 0.60:
         st.success("✅ Low Risk of Diabetes")
-    elif prob < 0.6:
+    elif prob < 0.75:
         st.warning("⚠️ Medium Risk of Diabetes")
     else:
         st.error("🚨 High Risk of Diabetes")
